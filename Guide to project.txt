@@ -1,0 +1,97 @@
+1> BASIC SET UP :
+    -   installation of express, ejs, mongoose
+    -   setting up database
+    -   setting up basic app.js
+
+2> Making MODEL :
+    -   EX:Listing --> 1st model in this project :- title, desc, image, price, location, country
+    -   create moels folder
+
+3> INITIALIZE SAMPLE DATA :
+    -   create init folder
+    -   create data.js insert sample data
+    -   initialize data.js datain index.js
+    -   cd ./init --> run this file once to enter data to db
+
+4> Basic setup of index, CURD route
+
+5> Designing : EJS-Mate 
+    -   views -> layouts
+
+6> Form validation
+
+7> error handling
+
+8> joi - schema validation - and this schema is for server side validation
+
+9> handling deletion - by mongoose middleware
+
+10> reconstructing routes through express router
+    --> Express Router: way to organize your app.js such that it does not become bloated
+    --> const router = express.Router({mergeParams:true})
+
+11> Authentication and Authorization
+
+12>MVC: model,view,controller
+
+13>router.route
+
+14>rating style change --> https://github.com/LunarLogic/starability
+
+15>storing file in mongodb from form using multer, 3rd party cloud service(cloudinary)
+
+16>atlas -> mongodb+srv://patelhelly195:g8OfViradAfYyVJj@cluster0.bdnywe5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+// Middleware //
+--> intermediary
+-->function between server receives the request and response send to clients
+-->ex. : methodOverride, bodyParser, epress.static, epress,urlencoded
+-->middleware can access req, res object
+-->chaining is possible in middleware
+-->middleware can send response and stop chaining
+-->middleware can do : 1> send response  2> call next middleware(next)
+-->general purpose of middleware is to execute next step/request --> next()
+
+//Error Handling//
+-handling async error: 
+    -->when there is error handling in async func it will not call next() by default
+    -->throw new ExpressError(status,"msg") => next(new ExpressError())
+    -->with async function we can add try catch block to display schema validation error 
+    -->to write try catch in more good way wrapAsync
+    -->Ex.: function asyncWrap(fn){
+                return function (req,res,next){
+                    fn(req,res,next).catch((err) => next(err));
+                }
+            }
+        --> app.get("", asyncWrap(async(req,res,next) => {
+                .....Code
+            }));
+-mongoose error: validation error, cast error => err.name, err.msg
+
+//Cookies//
+--> http cookies are small block of data created by web server while user is browsing a website and 
+    placed on user's computer by user's web browser
+--> res.cookie("name","value");
+--> Parse or access cookie by other route: 
+        --> const cookieParser = require('cookie-parser);
+        --> app.use(cookieParser);
+        --> console.dir(req.cookie);
+--> Signed cookie to prevent it form unintensional tempering :- two steped process
+    -->Send
+        --> app.use(cookieParser("secretcode));
+        --> res.cookie("name","value",{signed:true})
+    -->Verify
+        --> console.log(req.cookie) --> {} -->if reading signed cookie
+        --> console.log(req.signedCookie) --> {"name":"value"} --> for signed cookie
+
+//State//
+--> Stateful Protocol: require server to save status and session information. eg.:ftp
+--> Stateless Protocol: doesnot require server to retain info. eg.:http
+//connect-flash//
+--> special area of session used for storing msgs
+--> msg are written to flash and cleared after being displayed to user
+--> to use flash msgs in better way we use res.locals.messages
+
+//Authentication v/s Authorization
+-->Authentication:process o verifing who someone is
+-->Authorization:process of verifing what specific access user has
